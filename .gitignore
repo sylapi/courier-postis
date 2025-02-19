@@ -1,0 +1,9 @@
+/.idea/
+/vendor/
+/coverage/
+/.env
+composer.lock
+.phpunit.result.cache
+app.php
+.DS_Store
+/.vscode/
