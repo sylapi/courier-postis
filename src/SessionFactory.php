@@ -10,7 +10,7 @@ class SessionFactory
 {
     private $sessions = [];
 
-    const API_URL = 'https://shipments.postisgate.com/api/v1';
+    const API_URL = 'https://shipments.postisgate.com';
 
     public function session(Credentials $credentials): Session
     {

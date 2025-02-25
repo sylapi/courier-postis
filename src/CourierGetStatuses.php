@@ -14,6 +14,8 @@ class CourierGetStatuses implements CourierGetStatusesContract
 {
     private $session;
 
+    const API_PATH = '/api/v1/clients/shipments/trace';
+
     public function __construct(Session $session)
     {
         $this->session = $session;
@@ -21,24 +23,14 @@ class CourierGetStatuses implements CourierGetStatusesContract
 
     public function getStatus(string $shipmentId): ResponseStatus
     {
-
-
         try {
-            $payload = [
-                'shipmentId' => $shipmentId,
-                'token' => $this->session->token(),
-            ];
-
-            $result = [
-                'response' => 'SUCCESS',
-                'shipmentId' => $shipmentId,
-                'status' => 'ORIGINAL_DELIVERED',
-            ];
+          
       
+            $stream = $this->session->client()->get(self::API_PATH);
+            $result = json_decode($stream->getBody()->getContents());
+            $statusResponse = new StatusResponse((string) new StatusTransformer('TEST'), 'TEST');
+            // $statusResponse->setResponse($result);
 
-            $statusResponse = new StatusResponse((string) new StatusTransformer($result['status']), $result['status']);
-            $statusResponse->setResponse($result);
-            $statusResponse->setRequest($payload);
             return $statusResponse;
 
         } catch (\Exception $e) {
