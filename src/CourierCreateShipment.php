@@ -8,12 +8,13 @@ use Exception;
 use function PHPSTORM_META\map;
 use Sylapi\Courier\Contracts\Shipment;
 use Sylapi\Courier\Postis\Enums\TestId;
+use Sylapi\Courier\Postis\Helpers\Errors;
 use Sylapi\Courier\Postis\Entities\Options;
 use Sylapi\Courier\Exceptions\ValidateException;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Responses\Shipment as ResponseShipment;
-use Sylapi\Courier\Postis\Entities\Shipment as ShipmentEntity;
 
+use Sylapi\Courier\Postis\Entities\Shipment as ShipmentEntity;
 use Sylapi\Courier\Postis\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;
 
@@ -63,23 +64,21 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
             var_dump($result);
 
-            // $response->setRequest($payload);
-            // $result = ['response' => 'SUCCESS', 'shipmentId' => $shipment->getCustomOption()];
-            // $response->setResponse($result);
-            // $response->setShipmentId($result['shipmentId']);
+            $response->setRequest($payload);
+            $response->setResponse($result);
+            
+            $response->setShipmentId($result['shipmentId']);
             
 
             return $response;
 
         } catch (\Exception $e) {
-            throw new TransportException($e->getMessage());
+            throw new TransportException(Errors::prepareMessage($e->getMessage()));
         }
     }
 
     private function getPayload(ShipmentEntity $shipment): array
     {
-
-
         /**
          * @var Options $options
          */
@@ -91,11 +90,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
          */
         $parcel = $shipment->getParcel();
 
-        // var_dump($options->get('paymentType'));
-
-        // die();
-
-        
         $payload = [
             'clientOrderDate' => $options->get('clientOrderDate' ,date('Y-m-d H:i:s')),
             'clientOrderId' => $options->get('clientOrderId'),
@@ -132,37 +126,19 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             'shipmentPayer' => $options->get('shipmentPayer'),
             'shipmentReference' => $options->get('shipmentReference'),
             'sourceChannel' => $options->get('sourceChannel'),
-            'courierId' => $options->get('CourierCode'),
+            'courierId' => $options->get('courierCode'),
         ];
 
 
 
-
-     
-        /*
-        "shipmentAdditionalServices": {
-            "cashOnDelivery": 0,
-            "cashOnDeliveryReference": "string",
-            "insurance": true,
-            "morningDelivery": true,
-            "openPackage": true,
-            "priorityDelivery": true,
-            "retourDoc": true,
-            "saturdayDelivery": true,
-            "IBAN": "string"
-        },
-        */
-
-
-        // $services = $shipment->getServices();
+        $services = $shipment->getServices();
         
-        // if($services) {
-        //     foreach($services as $service) {
-        //         $service->setRequest($payload);
-        //         $payload = $service->handle();
-        //     }
-        // } 
-
+        if($services) {
+            foreach($services as $service) {
+                $service->setRequest($payload);
+                $payload = $service->handle();
+            }
+        } 
 
         return $payload;
     }
