@@ -136,7 +136,22 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         ];
 
 
+
+
      
+        /*
+        "shipmentAdditionalServices": {
+            "cashOnDelivery": 0,
+            "cashOnDeliveryReference": "string",
+            "insurance": true,
+            "morningDelivery": true,
+            "openPackage": true,
+            "priorityDelivery": true,
+            "retourDoc": true,
+            "saturdayDelivery": true,
+            "IBAN": "string"
+        },
+        */
 
 
         // $services = $shipment->getServices();
