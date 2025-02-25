@@ -62,12 +62,12 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                 throw new Exception('Json data is incorrect');
             }
 
-            var_dump($result);
+            // var_dump($result);
 
             $response->setRequest($payload);
             $response->setResponse($result);
             
-            $response->setShipmentId($result['shipmentId']);
+            $response->setShipmentId($result->shipmentId);
             
 
             return $response;

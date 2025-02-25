@@ -16,6 +16,9 @@ class CourierGetLabels implements CourierGetLabelsContract
 {
     private $session;
 
+    const API_PATH = '/api/v1/clients/shipments/{shipmentId}/label';
+
+
     public function __construct(Session $session)
     {
         $this->session = $session;
@@ -24,23 +27,21 @@ class CourierGetLabels implements CourierGetLabelsContract
     public function getLabel(string $shipmentId, LabelTypeContract $labelType): ResponseLabel
     {
         try {
-            $payload = [
-                'token' => $this->session->token(),
-                'shipmentId' => $shipmentId,
-            ];
+            $stream = $this->session
+            ->client()
+            ->get($this->getPath($shipmentId));
 
-            $result = [
-                'label' => 'label',
-            ];
-            
-            $labelResponse = new LabelResponse((string) $result['label']);
-            $labelResponse->setResponse($result);
-            $labelResponse->setRequest($payload);
+            $labelResponse = new LabelResponse((string) $stream->getBody()->getContents());
 
             return $labelResponse;
 
         } catch (\Exception $e) {
             throw new TransportException($e->getMessage());
         }
+    }
+
+    private function getPath(string $shipmentId): string
+    {
+        return str_replace('{shipmentId}', $shipmentId, self::API_PATH);
     }
 }
