@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Postis;
 
 use Exception;
-use function PHPSTORM_META\map;
 use Sylapi\Courier\Contracts\Shipment;
-use Sylapi\Courier\Postis\Enums\TestId;
 use Sylapi\Courier\Postis\Helpers\Errors;
+use Sylapi\Courier\Postis\Entities\Parcel;
 use Sylapi\Courier\Postis\Entities\Options;
 use Sylapi\Courier\Exceptions\ValidateException;
 use Sylapi\Courier\Exceptions\TransportException;
-use Sylapi\Courier\Responses\Shipment as ResponseShipment;
 
+use Sylapi\Courier\Responses\Shipment as ResponseShipment;
 use Sylapi\Courier\Postis\Entities\Shipment as ShipmentEntity;
 use Sylapi\Courier\Postis\Responses\Shipment as ShipmentResponse;
 use Sylapi\Courier\Contracts\CourierCreateShipment as CourierCreateShipmentContract;

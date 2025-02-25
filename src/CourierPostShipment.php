@@ -11,15 +11,12 @@ use Sylapi\Courier\Contracts\CourierPostShipment as CourierPostShipmentContract;
 
 class CourierPostShipment implements CourierPostShipmentContract
 {
-    private $session;
-
-    public function __construct(Session $session)
-    {
-        $this->session = $session;
-    }
+    public function __construct(private Session $session) {}
 
     public function postShipment(Booking $booking): ResponseParcel
     {
+      $session = $this->session;
+      $parcel = new ResponseParcel();
       throw new BadMethodCallException('Not implemented');
     }
 }
