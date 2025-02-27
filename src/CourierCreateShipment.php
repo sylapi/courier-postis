@@ -65,8 +65,10 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
             $response->setRequest($payload);
             $response->setResponse($result);
-            
             $response->setShipmentId($result->shipmentId);
+            $response->setReferenceId($result->clientOrderId);
+            $response->setParcelId($result?->shipmentParcels[0]?->itemCode);
+            $response->setParcelReferenceId($result?->shipmentParcels[0]?->parcelReferenceId);
             
 
             return $response;

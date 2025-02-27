@@ -26,10 +26,17 @@ class CourierGetStatuses implements CourierGetStatusesContract
         try {
           
       
-            $stream = $this->session->client()->get(self::API_PATH);
+            $stream = $this->session->client()->get(self::API_PATH, [
+                'query' => [
+                    'awblist' => $shipmentId,
+                    'type' => 'history',
+                ],
+            ]);
             $result = json_decode($stream->getBody()->getContents());
             $statusResponse = new StatusResponse((string) new StatusTransformer('TEST'), 'TEST');
             // $statusResponse->setResponse($result);
+
+            //TODO: Implement response transformation
 
             return $statusResponse;
 
