@@ -24,19 +24,29 @@ class CourierGetStatuses implements CourierGetStatusesContract
     public function getStatus(string $shipmentId): ResponseStatus
     {
         try {
-          
-      
             $stream = $this->session->client()->get(self::API_PATH, [
                 'query' => [
                     'awblist' => $shipmentId,
                     'type' => 'history',
                 ],
             ]);
-            $result = json_decode($stream->getBody()->getContents());
-            $statusResponse = new StatusResponse((string) new StatusTransformer('TEST'), 'TEST');
-            // $statusResponse->setResponse($result);
 
-            //TODO: Implement response transformation
+            if($stream->getStatusCode() !== 200) {
+                throw new TransportException('Invalid response from API');
+            }
+
+            $result = json_decode($stream->getBody()->getContents());
+
+            $statuses = $result[0]->eventsList ?? [];
+
+            if (empty($statuses)) {
+                throw new TransportException('No statuses found for the given shipment ID');
+            }
+
+            $status = $statuses [array_key_last($statuses)];
+
+            $statusResponse = new StatusResponse((string) new StatusTransformer($status->courierStatusDescription ?? $status->clientStatusDescription), $status->courierStatusDescription ?? $status->clientStatusDescription);
+            $statusResponse->setResponse($result);
 
             return $statusResponse;
 
