@@ -61,8 +61,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                 throw new Exception('Json data is incorrect');
             }
 
-            // var_dump($result);
-
             $response->setRequest($payload);
             $response->setResponse($result);
             $response->setShipmentId($result->shipmentId);
@@ -74,6 +72,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             return $response;
 
         } catch (\Exception $e) {
+
             throw new TransportException(Errors::prepareMessage($e->getMessage()));
         }
     }
@@ -91,12 +90,14 @@ class CourierCreateShipment implements CourierCreateShipmentContract
          */
         $parcel = $shipment->getParcel();
 
+
         $payload = [
             'clientOrderDate' => $options->get('clientOrderDate' ,date('Y-m-d H:i:s')),
             'clientOrderId' => $options->get('clientOrderId'),
             'paymentType' => $options->get('paymentType'),
+            'paymentType' => 'CASH',
             'productCategory' => $options->get('deliveryType'),
-            'recipientLocation' => [
+            'recipientLocation' => [          
                 'addressText' => $shipment->getReceiver()->getAddress(),
                 'contactPerson' => $shipment->getReceiver()->getFullName(),
                 'country' => $shipment->getReceiver()->getCountry(),
@@ -111,6 +112,20 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                 'email' => $shipment->getReceiver()->getEmail(),
             ],
             'senderLocationId' => $options->get('senderLocationId'),
+            'senderLocation' => [
+                "locationId" => $options->get('senderLocationId'),
+                "name" => $shipment->getSender()->getFullName(),
+                "contactPerson" => $shipment->getSender()->getFullName(),
+                "phoneNumber" => $shipment->getSender()->getPhone(),
+                "email" => $shipment->getSender()->getEmail(),
+                "country" => $shipment->getSender()->getCountryCode(),
+                "county" => $shipment->getSender()->getProvince(),
+                "locality" => $shipment->getSender()->getCity(),
+                "streetName" => $shipment->getSender()->getStreet(),
+                "buildingNumber" => $shipment->getSender()->getHouseNumber(). ' '.$shipment->getSender()->getApartmentNumber(),
+                "postalCode" => $shipment->getSender()->getZipCode(),
+                "addressText" =>  $shipment->getSender()->getAddress(),
+            ],
             'sendType' => $options->get('sendType'),
             'shipmentParcels' => [
                 [
@@ -129,7 +144,11 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             'sourceChannel' => $options->get('sourceChannel'),
             'courierId' => $options->get('courierCode'),
         ];
+    
 
+        if($options->has('thirdPartyServiceCode')) {
+            $payload['shipmentAdditionalValues']['thirdPartyServiceCode'] = $options->get('thirdPartyServiceCode');
+        } 
 
 
         $services = $shipment->getServices();
@@ -139,7 +158,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                 $service->setRequest($payload);
                 $payload = $service->handle();
             }
-        } 
+        }
 
         return $payload;
     }
