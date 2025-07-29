@@ -16,7 +16,7 @@ class ReturnDoc extends Service
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['retourDoc'] = true;
+        $payload['additionalServices']['retourDoc'] = true;
 
         return $payload;
     }

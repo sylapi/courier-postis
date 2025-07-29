@@ -30,7 +30,7 @@ class IBAN extends Service
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['IBAN'] = $this->getIBAN();
+        $payload['additionalServices']['IBAN'] = $this->getIBAN();
 
         return $payload;
     }

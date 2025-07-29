@@ -2,16 +2,24 @@
 
 namespace Sylapi\Courier\Postis\Helpers;
 
+use GuzzleHttp\Exception\RequestException;
+
 class Errors
 {
-    public static function prepareMessage(string $response): string
+    public static function prepareMessage(RequestException $e): string
     {
-        preg_match('/"message"\s*:\s*"([^"]+)"/', $response, $messageMatch);
-        $message = $messageMatch[1] ?? $response;
+        $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : null;
+        $headers = $e->getResponse() ? $e->getResponse()->getHeaders() : [];
+        $body = $e->getResponse() ? (string) $e->getResponse()->getBody() : null;
 
-        preg_match('/"status"\s*:\s*(\d+)/', $response, $statusMatch);
-        $status = $statusMatch[1] ?? '';
+        $json = json_decode($body, true);
+        
+        if (json_last_error() === JSON_ERROR_NONE && isset($json['message'])) {
+            $message = $json['message'];
+        } else {
+            $message = 'An error occurred while processing the request.';
+        }
 
-        return 'Error ' . $status . ': ' . $message;
+        return $message;
     }
 }

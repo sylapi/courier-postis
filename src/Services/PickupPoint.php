@@ -20,7 +20,8 @@ class PickupPoint extends PickupPointAbstract
             throw new InvalidArgumentException('PickupId is not defined');
         }
 
-        $payload['custom_attributes']['target_point'] = $this->getPickupId();
+        $payload['recipientLocation']['locationId'] = $this->getPickupId();
+        $payload['productCategory'] = "Pickup Point";
 
         return $payload;
     }

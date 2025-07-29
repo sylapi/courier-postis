@@ -16,7 +16,7 @@ class Insurance extends InsuranceAbstract
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['insurance'] = true;
+        $payload['additionalServices']['insurance'] = true;
 
         return $payload;
     }

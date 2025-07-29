@@ -16,7 +16,7 @@ class SaturdayDelivery extends Service
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['saturdayDelivery'] = true;
+        $payload['additionalServices']['saturdayDelivery'] = true;
 
         return $payload;
     }

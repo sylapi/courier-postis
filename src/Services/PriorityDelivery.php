@@ -16,7 +16,7 @@ class PriorityDelivery extends Service
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['priorityDelivery'] = true;
+        $payload['additionalServices']['priorityDelivery'] = true;
 
         return $payload;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Sylapi\Courier\Postis;
 
 use Exception;
+use GuzzleHttp\Exception\RequestException;
 use Sylapi\Courier\Contracts\Shipment;
 use Sylapi\Courier\Postis\Helpers\Errors;
 use Sylapi\Courier\Postis\Entities\Parcel;
@@ -44,7 +45,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             
             $payload = $this->getPayload($shipment);
 
-
             $stream = $this->session
             ->client()
             ->post(
@@ -71,9 +71,11 @@ class CourierCreateShipment implements CourierCreateShipmentContract
 
             return $response;
 
-        } catch (\Exception $e) {
-
-            throw new TransportException(Errors::prepareMessage($e->getMessage()));
+        } catch (RequestException $e) {
+            throw new TransportException(Errors::prepareMessage($e));
+        }
+        catch (\Exception $e) {
+            throw new TransportException('An error occurred while creating the shipment: ' . $e->getMessage());
         }
     }
 
@@ -126,6 +128,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                 "postalCode" => $shipment->getSender()->getZipCode(),
                 "addressText" =>  $shipment->getSender()->getAddress(),
             ],
+            "packingList" => $parcel->getReferenceId(),
             'sendType' => $options->get('sendType'),
             'shipmentParcels' => [
                 [
@@ -136,7 +139,10 @@ class CourierCreateShipment implements CourierCreateShipmentContract
                     'parcelBrutWeight' => $parcel->getWeight(),
                     'parcelContent' => $parcel->getContent(),
                     'parcelReferenceId' => $parcel->getReferenceId(),
-                    'parcelValue' => $parcel->getValue(),
+                    'parcelDeclaredValue' => $parcel->getValue(),
+                    'parcelHeight' => $parcel->getHeight(),
+                    'parcelWidth' => $parcel->getWidth(),
+                    'parcelLength' => $parcel->getLength(),
                 ],
             ],
             'shipmentPayer' => $options->get('shipmentPayer'),
@@ -144,7 +150,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             'sourceChannel' => $options->get('sourceChannel'),
             'courierId' => $options->get('courierCode'),
         ];
-    
 
         if($options->has('thirdPartyServiceCode')) {
             $payload['shipmentAdditionalValues']['thirdPartyServiceCode'] = $options->get('thirdPartyServiceCode');

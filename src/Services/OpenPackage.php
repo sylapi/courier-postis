@@ -16,7 +16,7 @@ class OpenPackage extends Service
             throw new InvalidArgumentException('Request is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['openPackage'] = true;
+        $payload['additionalServices']['openPackage'] = true;
 
         return $payload;
     }

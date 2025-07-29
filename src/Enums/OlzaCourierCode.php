@@ -6,12 +6,16 @@ namespace Sylapi\Courier\Postis\Enums;
 
 enum OlzaCourierCode: string {
     case GLS = 'GLS';
+    case GLS_PS = 'GLS-PS';
     case CP = 'CP';
     case CP_RR = 'CP-RR';
     case CP_NP = 'CP-NP';
+    case CP_BAL = 'CP-BAL';
     case SP = 'SP';
     case DPD = 'DPD';
-    case PPL = 'PPL';
+    case PPL_PAR = 'PPL-PAR';
+    case PPL_PS = 'PPL-PS';
+    case PPL_RET = 'PPL-RET';
     case ZAS = 'ZAS';
     case ZAS_P = 'ZAS-P';
     case ZAS_K = 'ZAS-K';
@@ -30,7 +34,7 @@ enum OlzaCourierCode: string {
     case BMCG_FAN = 'BMCG-FAN';
     case BMCG_INT = 'BMCG-INT';
     case BMCG_INT_PP = 'BMCG-INT-PP';
-    case ZASECONT_HD = 'ZAS-ECONT-HD';
+    case ZAS_ECONT_HD = 'ZAS-ECONT-HD';
     case ZAS_ECONT_PP = 'ZAS-ECONT-PP';
     case ZAS_ECONT_BOX = 'ZAS-ECONT-BOX';
     case ZAS_ACS_HD = 'ZAS-ACS-HD';

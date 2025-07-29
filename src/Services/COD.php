@@ -33,10 +33,10 @@ class COD extends CODAbstract
             throw new InvalidArgumentException('Amount is not defined');
         }
 
-        $payload['shipmentAdditionalServices']['cashOnDelivery'] = $this->getAmount();
+        $payload['additionalServices']['cashOnDelivery'] = $this->getAmount();
 
         if($this->getReference()) {
-            $payload['shipmentAdditionalServices']['cashOnDeliveryReference'] = $this->getReference();
+            $payload['additionalServices']['cashOnDeliveryReference'] = $this->getReference();
         }
 
         return $payload;
