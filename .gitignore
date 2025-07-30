@@ -8,3 +8,4 @@ app.php
 .DS_Store
 /.vscode/
 .env*
+/tests/Integration/IntegrationTest.php
