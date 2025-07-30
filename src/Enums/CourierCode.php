@@ -6,6 +6,7 @@ namespace Sylapi\Courier\Postis\Enums;
 
 enum CourierCode: string {
     case GLSPL = 'GLSPL';
+    case GLS = 'GLS';
     case OLZA = 'OLZA';
     case EUROCOMM = 'EUROCOMM';
     case UPS = 'UPS';
