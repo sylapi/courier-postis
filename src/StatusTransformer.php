@@ -15,10 +15,10 @@ class StatusTransformer extends StatusTransformerAbstract
      */
 
     public $statuses  = [
-        'INITIAL' => StatusType::NEW->value,
-        'ready for pickup' => StatusType::PICKUP_READY->value,
-        'departed' => StatusType::PROCESSING->value,
-        'delivered' => StatusType::DELIVERED->value,
+        'INITIAL' => StatusType::NEW,
+        'ready for pickup' => StatusType::PICKUP_READY,
+        'departed' => StatusType::PROCESSING,
+        'delivered' => StatusType::DELIVERED,
     ];
 
 }

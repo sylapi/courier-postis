@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Postis\Enums;
 
-enum CourierCode: string {
-    case GLSPL = 'GLSPL';
-    case GLS = 'GLS';
-    case OLZA = 'OLZA';
-    case EUROCOMM = 'EUROCOMM';
-    case UPS = 'UPS';
-    case DHLPL = 'DHLPL';
-    case ECONT = 'ECONT';
-    case DHL = 'DHL';
-    case INPOST = 'INPOST';
+class CourierCode {
+    public const GLSPL = 'GLSPL';
+    public const GLS = 'GLS';
+    public const OLZA = 'OLZA';
+    public const EUROCOMM = 'EUROCOMM';
+    public const UPS = 'UPS';
+    public const DHLPL = 'DHLPL';
+    public const ECONT = 'ECONT';
+    public const DHL = 'DHL';
+    public const INPOST = 'INPOST';
 }

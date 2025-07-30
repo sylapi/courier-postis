@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Postis\Enums;
 
-enum SourceChannel: string {
-    case ONLINE = 'ONLINE';
-    case RETAIL = 'RETAIL';
-    case MANUAL = 'MANUAL';
-    case BATCH = 'BATCH';
-    case MARKETPLACE = 'MARKETPLACE';
+class SourceChannel {
+    public const ONLINE = 'ONLINE';
+    public const RETAIL = 'RETAIL';
+    public const MANUAL = 'MANUAL';
+    public const BATCH = 'BATCH';
+    public const MARKETPLACE = 'MARKETPLACE';
 }

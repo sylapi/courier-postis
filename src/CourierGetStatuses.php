@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sylapi\Courier\Postis;
 
-use Sylapi\Courier\Postis\Enums\TestId;
 use Sylapi\Courier\Exceptions\TransportException;
 use Sylapi\Courier\Responses\Status as ResponseStatus;
 use Sylapi\Courier\Postis\Responses\Status as StatusResponse;
