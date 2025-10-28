@@ -11,7 +11,7 @@ class StatusTransformer extends StatusTransformerAbstract
 {
 
     /**
-     * @var array<string, string>
+     * @var array<string, mixed>
      */
 
     public $statuses  = [

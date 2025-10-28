@@ -97,7 +97,6 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             'clientOrderDate' => $options->get('clientOrderDate' ,date('Y-m-d H:i:s')),
             'clientOrderId' => $options->get('clientOrderId'),
             'paymentType' => $options->get('paymentType'),
-            'paymentType' => 'CASH',
             'productCategory' => $options->get('deliveryType'),
             'recipientLocation' => [          
                 'addressText' => $shipment->getReceiver()->getAddress(),
