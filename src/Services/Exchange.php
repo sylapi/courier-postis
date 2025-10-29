@@ -21,6 +21,8 @@ class Exchange extends Service
 
     public function handle(): array
     {
+        $payload = $this->getRequest();
+
         $payload['sendType'] = 'FORWARD_AND_BACK';
         $payload['returnServices']['type'] = 'box';
 
