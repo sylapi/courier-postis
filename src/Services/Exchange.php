@@ -6,7 +6,7 @@ use Sylapi\Courier\Abstracts\Service;
 
 class Exchange extends Service
 {
-    private ?string $description;
+    private ?string $description = null;
 
     public function setDescription(string $description): self
     {
