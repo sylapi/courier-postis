@@ -72,14 +72,14 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             return $response;
 
         } catch (RequestException $e) {
-            throw new TransportException(Errors::prepareMessage($e));
+            throw new TransportException(Errors::prepareMessage($e, $payload));
         }
         catch (\Exception $e) {
             throw new TransportException('An error occurred while creating the shipment: ' . $e->getMessage());
         }
     }
 
-    public function getPayload(ShipmentEntity $shipment): array
+    private function getPayload(ShipmentEntity $shipment): array
     {
         /**
          * @var Options $options

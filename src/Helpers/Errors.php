@@ -6,7 +6,7 @@ use GuzzleHttp\Exception\RequestException;
 
 class Errors
 {
-    public static function prepareMessage(RequestException $e): string
+    public static function prepareMessage(RequestException $e, array $payload = []): string
     {
         $statusCode = $e->getResponse() ? $e->getResponse()->getStatusCode() : null;
         $headers = $e->getResponse() ? $e->getResponse()->getHeaders() : [];
@@ -20,6 +20,8 @@ class Errors
             $message = 'An error occurred while processing the request.';
         }
 
-        return $message;
+        $payload = !empty($payload) ? json_encode($payload) : 'N/A';
+
+        return $message . ' Payload: ' . $payload;
     }
 }
