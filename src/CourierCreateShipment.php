@@ -79,7 +79,7 @@ class CourierCreateShipment implements CourierCreateShipmentContract
         }
     }
 
-    private function getPayload(ShipmentEntity $shipment): array
+    public function getPayload(ShipmentEntity $shipment): array
     {
         /**
          * @var Options $options
