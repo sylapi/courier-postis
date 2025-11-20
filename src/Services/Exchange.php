@@ -24,10 +24,10 @@ class Exchange extends Service
         $payload = $this->getRequest();
 
         $payload['sendType'] = 'FORWARD_AND_BACK';
-        $payload['returnServices']['type'] = 'box';
+        $payload['returnServices'] = [['type' => 'box']];
 
         if ($this->getDescription()) {
-            $payload['returnServices']['description'] = $this->getDescription();    
+            $payload['returnServices'][0]['description'] = $this->getDescription();    
         }
         
         return $payload;
