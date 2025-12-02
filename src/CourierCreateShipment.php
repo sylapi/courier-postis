@@ -154,6 +154,9 @@ class CourierCreateShipment implements CourierCreateShipmentContract
             $payload['shipmentAdditionalValues']['thirdPartyServiceCode'] = $options->get('thirdPartyServiceCode');
         } 
 
+        if($options->has('pickupDate')) {
+            $payload['pickupDate'] = $options->get('pickupDate');
+        }
 
         $services = $shipment->getServices();
         
