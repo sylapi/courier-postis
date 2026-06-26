@@ -28,19 +28,25 @@ class StatusTransformer extends StatusTransformerAbstract
     /**
      * @var array<string, string>
      */
-    public $statuses = [
-        'INITIAL'           => StatusType::NEW->value,             // defaultClientId 0
-        'order created'     => StatusType::ORDERED->value,         // defaultClientId 1
-        'courier warehouse' => StatusType::WAREHOUSE_ENTRY->value, // defaultClientId 3
-        'delivered'         => StatusType::DELIVERED->value,       // defaultClientId 5
-        'ready for pickup'  => StatusType::PICKUP_READY->value,
-        'departed'          => StatusType::PROCESSING->value,
-    ];
+    public $statuses = [];
 
     public function __construct(string $status)
     {
         parent::__construct($status);
         $this->clientStatus = $status;
+
+        // Mapa budowana w konstruktorze (runtime), a nie w wartosci domyslnej
+        // wlasciwosci - pobranie ->value z enuma w constant expression jest
+        // niedozwolone przed PHP 8.2 ("Constant expression contains invalid
+        // operations").
+        $this->statuses = [
+            'INITIAL'           => StatusType::NEW->value,             // defaultClientId 0
+            'order created'     => StatusType::ORDERED->value,         // defaultClientId 1
+            'courier warehouse' => StatusType::WAREHOUSE_ENTRY->value, // defaultClientId 3
+            'delivered'         => StatusType::DELIVERED->value,       // defaultClientId 5
+            'ready for pickup'  => StatusType::PICKUP_READY->value,
+            'departed'          => StatusType::PROCESSING->value,
+        ];
     }
 
     public function __toString(): string
