@@ -42,9 +42,17 @@ class CourierGetStatuses implements CourierGetStatusesContract
                 throw new TransportException('No statuses found for the given shipment ID');
             }
 
-            $status = $statuses [array_key_last($statuses)];
+            $status = $statuses[array_key_last($statuses)];
 
-            $statusResponse = new StatusResponse((string) new StatusTransformer($status->courierStatusDescription ?? $status->clientStatusDescription), $status->courierStatusDescription ?? $status->clientStatusDescription);
+            // Postis sam normalizuje statusy kurierow do clientStatusDescription
+            // (defaultClientId) - mapujemy ten znormalizowany status, a surowy
+            // opis zostawiamy jako originalStatusName.
+            $clientStatus = $status->clientStatusDescription ?? '';
+
+            $statusResponse = new StatusResponse(
+                (string) new StatusTransformer($clientStatus),
+                $clientStatus
+            );
             $statusResponse->setResponse($result);
 
             return $statusResponse;
