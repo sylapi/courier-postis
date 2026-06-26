@@ -17,6 +17,9 @@ use Sylapi\Courier\Enums\StatusType;
  * Klucz = clientStatusDescription (dokladnie jak zwraca API, case-sensitive).
  * Obok kazdego wpisu podany jest potwierdzony defaultClientId.
  *
+ * UWAGA: w sylapi/courier >= 3.0.3 StatusType to klasa ze stalymi (string),
+ * a nie enum - dlatego uzywamy StatusType::NEW (bez ->value).
+ *
  * Statusy nieznane (jeszcze nie zaobserwowane) trafiaja do StatusType::PROCESSING
  * przez __toString(), zeby ujednolicony system nigdy nie dostal surowego tekstu.
  * Gdy zaobserwujesz nowy clientStatusDescription – dopisz go tutaj.
@@ -28,29 +31,23 @@ class StatusTransformer extends StatusTransformerAbstract
     /**
      * @var array<string, string>
      */
-    public $statuses = [];
+    public $statuses = [
+        'INITIAL'           => StatusType::NEW,             // defaultClientId 0
+        'order created'     => StatusType::ORDERED,         // defaultClientId 1
+        'courier warehouse' => StatusType::WAREHOUSE_ENTRY, // defaultClientId 3
+        'delivered'         => StatusType::DELIVERED,       // defaultClientId 5
+        'ready for pickup'  => StatusType::PICKUP_READY,
+        'departed'          => StatusType::PROCESSING,
+    ];
 
     public function __construct(string $status)
     {
         parent::__construct($status);
         $this->clientStatus = $status;
-
-        // Mapa budowana w konstruktorze (runtime), a nie w wartosci domyslnej
-        // wlasciwosci - pobranie ->value z enuma w constant expression jest
-        // niedozwolone przed PHP 8.2 ("Constant expression contains invalid
-        // operations").
-        $this->statuses = [
-            'INITIAL'           => StatusType::NEW->value,             // defaultClientId 0
-            'order created'     => StatusType::ORDERED->value,         // defaultClientId 1
-            'courier warehouse' => StatusType::WAREHOUSE_ENTRY->value, // defaultClientId 3
-            'delivered'         => StatusType::DELIVERED->value,       // defaultClientId 5
-            'ready for pickup'  => StatusType::PICKUP_READY->value,
-            'departed'          => StatusType::PROCESSING->value,
-        ];
     }
 
     public function __toString(): string
     {
-        return $this->statuses[$this->clientStatus] ?? StatusType::PROCESSING->value;
+        return $this->statuses[$this->clientStatus] ?? StatusType::PROCESSING;
     }
 }
